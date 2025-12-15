@@ -8,11 +8,6 @@ namespace OpenTelemetry.Exporter;
 internal sealed class OtlpMtlsOptions
 {
     /// <summary>
-    /// Gets or sets the path to the CA certificate file in PEM format.
-    /// </summary>
-    public string? CaCertificatePath { get; set; }
-
-    /// <summary>
     /// Gets or sets the path to the client certificate file in PEM format.
     /// </summary>
     public string? ClientCertificatePath { get; set; }
@@ -30,11 +25,9 @@ internal sealed class OtlpMtlsOptions
 
     /// <summary>
     /// Gets a value indicating whether mTLS is enabled.
-    /// mTLS is considered enabled if at least the client certificate path or CA certificate path is provided.
+    /// mTLS is considered enabled if at least the client certificate path is provided.
     /// </summary>
-    public bool IsEnabled =>
-        !string.IsNullOrWhiteSpace(this.ClientCertificatePath)
-        || !string.IsNullOrWhiteSpace(this.CaCertificatePath);
+    public bool IsEnabled => !string.IsNullOrWhiteSpace(this.ClientCertificatePath);
 }
 
 #endif

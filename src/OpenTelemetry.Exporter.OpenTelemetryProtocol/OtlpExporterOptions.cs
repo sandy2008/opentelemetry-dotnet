@@ -75,10 +75,10 @@ public class OtlpExporterOptions : IOtlpExporterOptions
             var timeout = TimeSpan.FromMilliseconds(this.TimeoutMilliseconds);
 
 #if NET
-            // If mTLS is configured, create an mTLS-enabled client
-            if (this.MtlsOptions?.IsEnabled == true)
+            if (this.TlsOptions?.IsEnabled == true || this.MtlsOptions?.IsEnabled == true)
             {
-                return OtlpMtlsHttpClientFactory.CreateMtlsHttpClient(
+                return OtlpTlsHttpClientFactory.CreateHttpClient(
+                    this.TlsOptions,
                     this.MtlsOptions,
                     client => client.Timeout = timeout);
             }
@@ -182,6 +182,8 @@ public class OtlpExporterOptions : IOtlpExporterOptions
     internal bool AppendSignalPathToEndpoint { get; private set; } = true;
 
 #if NET
+    internal OtlpTlsOptions? TlsOptions { get; set; }
+
     internal OtlpMtlsOptions? MtlsOptions { get; set; }
 #endif
 
@@ -308,22 +310,28 @@ public class OtlpExporterOptions : IOtlpExporterOptions
         }
 
 #if NET
-        // Apply mTLS configuration from environment variables
+        // Apply TLS and mTLS configuration from environment variables
+        this.ApplyTlsConfiguration(configuration);
         this.ApplyMtlsConfiguration(configuration);
 #endif
     }
 
 #if NET
-    private void ApplyMtlsConfiguration(IConfiguration configuration)
+    private void ApplyTlsConfiguration(IConfiguration configuration)
     {
         Debug.Assert(configuration != null, "configuration was null");
 
-        // Check and apply CA certificate path from environment variable
-        if (configuration.TryGetStringValue(OtlpSpecConfigDefinitions.CertificateEnvVarName, out var caCertPath))
+        // Check and apply CA certificate path from environment variable.
+        if (configuration.TryGetStringValue(OtlpSpecConfigDefinitions.CertificateEnvVarName, out var certificatePath))
         {
-            this.MtlsOptions ??= new();
-            this.MtlsOptions.CaCertificatePath = caCertPath;
+            this.TlsOptions ??= new();
+            this.TlsOptions.CertificatePath = certificatePath;
         }
+    }
+
+    private void ApplyMtlsConfiguration(IConfiguration configuration)
+    {
+        Debug.Assert(configuration != null, "configuration was null");
 
         // Check and apply client certificate path from environment variable
         if (configuration.TryGetStringValue(OtlpSpecConfigDefinitions.ClientCertificateEnvVarName, out var clientCertPath))

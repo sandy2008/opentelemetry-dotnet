@@ -32,8 +32,10 @@ internal static class OtlpSpecConfigDefinitions
     public const string TracesTimeoutEnvVarName = "OTEL_EXPORTER_OTLP_TRACES_TIMEOUT";
     public const string TracesProtocolEnvVarName = "OTEL_EXPORTER_OTLP_TRACES_PROTOCOL";
 
-    // mTLS certificate environment variables
+    // TLS certificate environment variables
     public const string CertificateEnvVarName = "OTEL_EXPORTER_OTLP_CERTIFICATE";
+
+    // mTLS client certificate environment variables
     public const string ClientKeyEnvVarName = "OTEL_EXPORTER_OTLP_CLIENT_KEY";
     public const string ClientCertificateEnvVarName = "OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE";
 }
