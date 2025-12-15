@@ -265,7 +265,7 @@ public sealed class OtlpExporterOptionsTests : IDisposable
 
 #if NET
     [Fact]
-    public void OtlpExporterOptions_MtlsEnvironmentVariables()
+    public void OtlpExporterOptions_TlsEnvironmentVariables_Certificate()
     {
         // Test CA certificate environment variable
         Environment.SetEnvironmentVariable("OTEL_EXPORTER_OTLP_CERTIFICATE", "/path/to/ca.crt");
@@ -274,9 +274,11 @@ public sealed class OtlpExporterOptionsTests : IDisposable
         {
             var options = new OtlpExporterOptions();
 
-            Assert.NotNull(options.MtlsOptions);
-            Assert.Equal("/path/to/ca.crt", options.MtlsOptions.CaCertificatePath);
-            Assert.True(options.MtlsOptions.IsEnabled);
+            Assert.NotNull(options.TlsOptions);
+            Assert.Equal("/path/to/ca.crt", options.TlsOptions.CertificatePath);
+            Assert.True(options.TlsOptions.IsEnabled);
+
+            Assert.Null(options.MtlsOptions);
         }
         finally
         {
@@ -299,6 +301,8 @@ public sealed class OtlpExporterOptionsTests : IDisposable
             Assert.Equal("/path/to/client.crt", options.MtlsOptions.ClientCertificatePath);
             Assert.Equal("/path/to/client.key", options.MtlsOptions.ClientKeyPath);
             Assert.True(options.MtlsOptions.IsEnabled);
+
+            Assert.Null(options.TlsOptions);
         }
         finally
         {
@@ -310,7 +314,7 @@ public sealed class OtlpExporterOptionsTests : IDisposable
     [Fact]
     public void OtlpExporterOptions_MtlsEnvironmentVariables_AllCertificates()
     {
-        // Test all mTLS environment variables together
+        // Test all TLS/mTLS environment variables together
         Environment.SetEnvironmentVariable("OTEL_EXPORTER_OTLP_CERTIFICATE", "/path/to/ca.crt");
         Environment.SetEnvironmentVariable("OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE", "/path/to/client.crt");
         Environment.SetEnvironmentVariable("OTEL_EXPORTER_OTLP_CLIENT_KEY", "/path/to/client.key");
@@ -319,8 +323,11 @@ public sealed class OtlpExporterOptionsTests : IDisposable
         {
             var options = new OtlpExporterOptions();
 
+            Assert.NotNull(options.TlsOptions);
+            Assert.Equal("/path/to/ca.crt", options.TlsOptions.CertificatePath);
+            Assert.True(options.TlsOptions.IsEnabled);
+
             Assert.NotNull(options.MtlsOptions);
-            Assert.Equal("/path/to/ca.crt", options.MtlsOptions.CaCertificatePath);
             Assert.Equal("/path/to/client.crt", options.MtlsOptions.ClientCertificatePath);
             Assert.Equal("/path/to/client.key", options.MtlsOptions.ClientKeyPath);
             Assert.True(options.MtlsOptions.IsEnabled);
@@ -336,9 +343,10 @@ public sealed class OtlpExporterOptionsTests : IDisposable
     [Fact]
     public void OtlpExporterOptions_MtlsEnvironmentVariables_NoEnvironmentVariables()
     {
-        // Ensure no mTLS options are set when no environment variables are present
+        // Ensure no TLS or mTLS options are set when no environment variables are present
         var options = new OtlpExporterOptions();
 
+        Assert.Null(options.TlsOptions);
         Assert.Null(options.MtlsOptions);
     }
 
@@ -359,8 +367,11 @@ public sealed class OtlpExporterOptionsTests : IDisposable
 
         var options = new OtlpExporterOptions(configuration, OtlpExporterOptionsConfigurationType.Default, new());
 
+        Assert.NotNull(options.TlsOptions);
+        Assert.Equal("/config/path/to/ca.crt", options.TlsOptions.CertificatePath);
+        Assert.True(options.TlsOptions.IsEnabled);
+
         Assert.NotNull(options.MtlsOptions);
-        Assert.Equal("/config/path/to/ca.crt", options.MtlsOptions.CaCertificatePath);
         Assert.Equal("/config/path/to/client.crt", options.MtlsOptions.ClientCertificatePath);
         Assert.Equal("/config/path/to/client.key", options.MtlsOptions.ClientKeyPath);
         Assert.True(options.MtlsOptions.IsEnabled);

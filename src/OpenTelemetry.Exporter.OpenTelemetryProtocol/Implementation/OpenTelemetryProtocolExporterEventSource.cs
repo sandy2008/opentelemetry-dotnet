@@ -325,5 +325,12 @@ internal sealed class OpenTelemetryProtocolExporterEventSource : EventSource, IC
         Level = EventLevel.Error)]
     internal void MtlsHttpClientCreationFailed(string exception) =>
         this.WriteEvent(34, exception);
+
+    [Event(
+        35,
+        Message = "TLS configuration enabled. Trusted CA certificate: '{0}'.",
+        Level = EventLevel.Informational)]
+    internal void TlsConfigurationEnabled(string caCertificateSubject) =>
+        this.WriteEvent(35, caCertificateSubject);
 #endif
 }
