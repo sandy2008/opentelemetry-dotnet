@@ -48,8 +48,8 @@ files.
 > Certain components, marked as
 [pre-release](https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/VERSIONING.md#pre-releases),
 are still work in progress and can undergo breaking changes before stable
-release. Check the individual `README.md` file for each component to understand its
-current state.
+release. Check the individual `README.md` file for each component to understand
+its current state.
 
 To understand which portions of the [OpenTelemetry
 Specification](https://github.com/open-telemetry/opentelemetry-specification)
@@ -132,7 +132,7 @@ libraries](https://github.com/open-telemetry/opentelemetry-specification/blob/ma
   (OpenTelemetry Protocol)
 * [Prometheus AspNetCore](./src/OpenTelemetry.Exporter.Prometheus.AspNetCore/README.md)
 * [Prometheus HttpListener](./src/OpenTelemetry.Exporter.Prometheus.HttpListener/README.md)
-* [Zipkin](./src/OpenTelemetry.Exporter.Zipkin/README.md)
+* [Zipkin](./src/OpenTelemetry.Exporter.Zipkin/README.md) (Deprecated)
 
 Additional packages including [instrumentation
 libraries](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/glossary.md#instrumentation-library),
