@@ -45,7 +45,9 @@ internal static class OtlpTlsHttpClientFactory
 
             // Create HttpClientHandler with TLS/mTLS configuration
 #pragma warning disable CA2000 // Dispose objects before losing scope - HttpClientHandler is disposed by HttpClient
+#pragma warning disable CA5399 // CheckCertificateRevocationList is enabled in TlsHttpClientHandler constructor
             handler = new TlsHttpClientHandler();
+#pragma warning restore CA5399
 #pragma warning restore CA2000
             configurer.Apply(handler);
 
