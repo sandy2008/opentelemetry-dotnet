@@ -85,6 +85,9 @@ internal static class OtlpHttpClientSecurityConfigurerFactory
                         OtlpCertificateManager.CaCertificateType);
                 }
 
+                OpenTelemetryProtocolExporterEventSource.Log.TlsConfigurationEnabled(
+                    caCertificate.Subject);
+
                 tlsHandler.ConfigureTrustedCaCertificate(caCertificate);
 
                 // Handler now owns the certificate and will dispose it when disposed.

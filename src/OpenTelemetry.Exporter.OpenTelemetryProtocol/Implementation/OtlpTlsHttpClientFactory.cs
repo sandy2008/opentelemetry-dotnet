@@ -47,7 +47,6 @@ internal static class OtlpTlsHttpClientFactory
 #pragma warning disable CA2000 // Dispose objects before losing scope - HttpClientHandler is disposed by HttpClient
             handler = new TlsHttpClientHandler();
 #pragma warning restore CA2000
-            handler.CheckCertificateRevocationList = true;
             configurer.Apply(handler);
 
             var client = new HttpClient(handler, disposeHandler: true);
