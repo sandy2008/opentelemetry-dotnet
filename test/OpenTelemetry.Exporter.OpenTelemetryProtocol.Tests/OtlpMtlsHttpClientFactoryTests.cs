@@ -212,7 +212,7 @@ public class OtlpMtlsHttpClientFactoryTests
         using var chain = new X509Chain();
         chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
 
-        var result = OpenTelemetryProtocol.Implementation.OtlpMtlsCertificateManager.ValidateServerCertificate(
+        var result = OpenTelemetryProtocol.Implementation.OtlpCertificateManager.ValidateServerCertificate(
             serverCertificate,
             chain,
             SslPolicyErrors.None,
@@ -229,7 +229,7 @@ public class OtlpMtlsHttpClientFactoryTests
         using var chain = new X509Chain();
         chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
 
-        var result = OpenTelemetryProtocol.Implementation.OtlpMtlsCertificateManager.ValidateServerCertificate(
+        var result = OpenTelemetryProtocol.Implementation.OtlpCertificateManager.ValidateServerCertificate(
             serverCertificate,
             chain,
             SslPolicyErrors.RemoteCertificateChainErrors,
@@ -248,7 +248,7 @@ public class OtlpMtlsHttpClientFactoryTests
         using var chain = new X509Chain();
         chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
 
-        var result = OpenTelemetryProtocol.Implementation.OtlpMtlsCertificateManager.ValidateServerCertificate(
+        var result = OpenTelemetryProtocol.Implementation.OtlpCertificateManager.ValidateServerCertificate(
             serverCertificate,
             chain,
             SslPolicyErrors.RemoteCertificateChainErrors,
@@ -262,9 +262,9 @@ public class OtlpMtlsHttpClientFactoryTests
     {
         using var expiredCertificate = CreateExpiredCertificate();
 
-        var result = OpenTelemetryProtocol.Implementation.OtlpMtlsCertificateManager.ValidateCertificateChain(
+        var result = OpenTelemetryProtocol.Implementation.OtlpCertificateManager.ValidateCertificateChain(
             expiredCertificate,
-            OpenTelemetryProtocol.Implementation.OtlpMtlsCertificateManager.ClientCertificateType);
+            OpenTelemetryProtocol.Implementation.OtlpCertificateManager.ClientCertificateType);
 
         Assert.False(result);
     }
